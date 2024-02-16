@@ -1,0 +1,14 @@
+POST   http://localhost:5277/order
+Content-Type: application/json
+
+{
+    "account_id": 1,
+    "order_class": "stock",
+    "symbol": "sdjf",
+    "side": "buy",
+    "quantity": 5,
+    "type": "limit",
+    "duration": "day",
+    "price": 444.2
+    
+}

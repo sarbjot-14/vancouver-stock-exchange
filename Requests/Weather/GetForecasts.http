@@ -1,1 +1,2 @@
-GET  http://localhost:5277/auth/register
+
+POST   http://localhost:5277/order
