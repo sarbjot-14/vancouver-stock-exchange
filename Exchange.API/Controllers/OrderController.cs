@@ -1,6 +1,8 @@
 using System.Security.Cryptography;
-using Exchange.Application.Services.Order;
-using Exchange.Contracts.Order;
+using Exchange.Application.Services.Orders;
+using Exchange.Contracts;
+using Exchange.Contracts.EntityExtensions;
+using Exchange.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Exchange.API.Controllers;
@@ -16,9 +18,10 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateOrder(OrderRequest orderRequest)
+    public IActionResult CreateOrder(OrderRequestDto orderRequestDto)
     {
-        this._orderService.CreateOrder();
+        Order newOrder = orderRequestDto.ToOrder();
+        this._orderService.CreateOrder(newOrder);
 
         return Ok("whoooo hoo");
     }

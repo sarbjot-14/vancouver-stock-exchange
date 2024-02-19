@@ -1,5 +1,5 @@
 using Exchange.Application.Services;
-using Exchange.Application.Services.Order;
+using Exchange.Application.Services.Orders;
 using Microsoft.Extensions.DependencyInjection;
 
 

@@ -16,6 +16,7 @@
     <ProjectReference Include="..\Exchange.Application\Exchange.Application.csproj" />
     <ProjectReference Include="..\Exchange.Contracts\Exchange.Contracts.csproj" />
     <ProjectReference Include="..\Exchange.Infrastructure\Exchange.Infrastructure.csproj" />
+    <ProjectReference Include="..\Exchange.Domain\Exchange.Domain.csproj" />
   </ItemGroup>
 
 </Project>
