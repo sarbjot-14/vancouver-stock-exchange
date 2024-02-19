@@ -4,7 +4,7 @@ Creating a Stock Exchange Simulation using .NET. Complete with buy sell orders a
 
 ## Design Decisions
 
-# Organization
+### Organization
 
 Used Clean Architecture to separate project into layers. Those layers are Infrastructure layer (responsible for external tools), API layer (responsible for handling http requests), Application layer (responsible for business logic), Domain layer (responsible for defining domain entities). All dependencies flow inwards which helps makes outer layers more modular and easier to adapt.
 
