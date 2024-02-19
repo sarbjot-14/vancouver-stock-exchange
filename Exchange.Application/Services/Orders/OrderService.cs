@@ -15,13 +15,9 @@ public class OrderService : IOrderService
 
     public void CreateOrder(Order order)
     {
-        //Console.WriteLine("we are in the service!!!");
         _exchangeRepository.CreateOrder(order);
 
     }
 
-    // public void CreateOrder(Domain.Entities.Order order)
-    // {
-    //     throw new NotImplementedException();
-    // }
+
 }
