@@ -1,7 +1,7 @@
 
 using Exchange.Application.Interfaces.Persistence;
 using Exchange.Application.Services.Orders;
-using Exchange.Application.Util;
+using Exchange.Application.OrderMatching;
 using Exchange.Domain.Entities;
 
 namespace Exchange.Application.Services;

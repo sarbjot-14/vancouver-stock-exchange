@@ -3,7 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 using Exchange.Application.Services;
 using Exchange.Domain.Entities;
 
-namespace Exchange.Application.Util;
+namespace Exchange.Application.OrderMatching;
 
 
 public class OrderBook()

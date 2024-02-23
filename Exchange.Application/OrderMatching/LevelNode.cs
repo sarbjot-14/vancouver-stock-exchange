@@ -1,6 +1,6 @@
 using Exchange.Domain.Entities;
 
-namespace Exchange.Application.Util;
+namespace Exchange.Application.OrderMatching;
 
 public class LevelNode()
 {
