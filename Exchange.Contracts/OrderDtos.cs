@@ -45,7 +45,7 @@ public record OrderResponseDto(
     [Required]
     string duration,
     [Required]
-    decimal price,
+    decimal fillPrice,
     decimal? stop,
     decimal? trailing
 );

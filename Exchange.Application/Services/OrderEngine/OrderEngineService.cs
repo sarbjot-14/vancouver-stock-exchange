@@ -1,21 +1,26 @@
 
 using Exchange.Application.Interfaces.Persistence;
 using Exchange.Application.Services.Orders;
+using Exchange.Application.Util;
 using Exchange.Domain.Entities;
 
 namespace Exchange.Application.Services;
 
-public class OrderService : IOrderService
+public class OrderEngineService : IOrderEngineService
 {
     private readonly IExchangeRepository _exchangeRepository;
-    public OrderService(IExchangeRepository exchangeRepository)
+    OrderBook orderBook;
+    public OrderEngineService(IExchangeRepository exchangeRepository)
     {
         _exchangeRepository = exchangeRepository;
+        orderBook = new OrderBook();
     }
 
     public void CreateOrder(Order order)
     {
-        _exchangeRepository.CreateOrder(order);
+
+        //_exchangeRepository.CreateOrder(order);
+        orderBook.AddOrder(order);
 
     }
 

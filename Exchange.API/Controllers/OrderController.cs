@@ -11,8 +11,8 @@ namespace Exchange.API.Controllers;
 [Route("[controller]")]
 public class OrderController : ControllerBase
 {
-    private readonly IOrderService _orderService;
-    public OrderController(IOrderService orderService)
+    private readonly IOrderEngineService _orderService;
+    public OrderController(IOrderEngineService orderService)
     {
         _orderService = orderService;
     }

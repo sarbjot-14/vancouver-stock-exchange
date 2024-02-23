@@ -31,8 +31,15 @@ public class Order
     [Required]
 
     public decimal price { get; set; }
-    [Required]
 
+    [Required]
+    public DateTime recievedTime { get; set; }
+
+    [Required]
+    public int quantityFilled { get; set; }
+
+
+    [Required]
     public decimal? stop { get; set; }
     [Required]
 
