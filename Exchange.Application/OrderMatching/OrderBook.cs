@@ -2,6 +2,7 @@ using System.Runtime.ExceptionServices;
 using System.Security.Cryptography.X509Certificates;
 using Exchange.Application.Services;
 using Exchange.Domain.Entities;
+using Exchange.Domain.Enums;
 
 namespace Exchange.Application.OrderMatching;
 
@@ -18,7 +19,7 @@ public class OrderBook()
         if (order.side == "buy")
         {
 
-            if (order.side == "market")
+            if (order.type == OrderTypes.Market)
             {
                 // // check for matching ask orders
                 // LevelNode firstLevel = bids.First.Value;

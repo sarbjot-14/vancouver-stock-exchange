@@ -1,5 +1,6 @@
 
 using System.ComponentModel.DataAnnotations;
+using Exchange.Domain.Enums;
 
 namespace Exchange.Contracts;
 public record OrderRequestDto(
@@ -14,7 +15,7 @@ public record OrderRequestDto(
     [Required]
     int quantity,
     [Required]
-    string type,
+    OrderTypes type,
     [Required]
     string duration,
     decimal price,
@@ -41,7 +42,7 @@ public record OrderResponseDto(
     [Required]
     int quantity,
     [Required]
-    string type,
+    OrderTypes type,
     [Required]
     string duration,
     [Required]

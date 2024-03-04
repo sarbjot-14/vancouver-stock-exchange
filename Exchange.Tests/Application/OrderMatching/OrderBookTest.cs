@@ -3,8 +3,13 @@ using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Exchange.Application.OrderMatching;
 using Exchange.Domain.Entities;
-
+using Exchange.Domain.Enums;
 namespace Exchange.Tests.Application.OrderBookTest;
+
+// The name of your test should consist of three parts:
+// The name of the method being tested.
+// The scenario under which it's being tested.
+// The expected behavior when the scenario is invoked.
 
 public class OrderBookTest
 {
@@ -24,7 +29,7 @@ public class OrderBookTest
             recievedTime = new DateTime(),
             side = "buy",
             symbol = "AAPL",
-            type = "limit"},
+            type = OrderTypes.Limit},
             new Order { account_id = 1,
             order_class = "stock",
             duration = "gtd",
@@ -34,7 +39,7 @@ public class OrderBookTest
             recievedTime = new DateTime(),
             side = "buy",
             symbol = "AAPL",
-            type = "limit"},
+            type = OrderTypes.Limit},
             new Order { account_id = 1,
             order_class = "stock",
             duration = "gtd",
@@ -44,7 +49,7 @@ public class OrderBookTest
             recievedTime = new DateTime(),
             side = "buy",
             symbol = "AAPL",
-            type = "limit"}, new Order { account_id = 1,
+            type = OrderTypes.Limit}, new Order { account_id = 1,
             order_class = "stock",
             duration = "gtd",
             price = 300,
@@ -53,7 +58,8 @@ public class OrderBookTest
             recievedTime = new DateTime(),
             side = "buy",
             symbol = "AAPL",
-            type = "limit"},};
+            type = OrderTypes.Limit},};
+            
         // expected orders
         var expected = new[]{
             new { Id =  initalBids[3].Id, price = 300 },
@@ -66,19 +72,12 @@ public class OrderBookTest
         // Act
         foreach (var order in initalBids)
         {
-            Console.WriteLine($"next is {order.Id}");
+            //Console.WriteLine($"next is {order.Id}");
             orderBook.AddOrder(order);
         }
 
         List<Order> orderbookBids = orderBook.GetBids();
 
-
-        // for (int i = 0; i < orderbookBids.Count; i++)
-        // {
-
-        //     Console.WriteLine($"actual {JsonSerializer.Serialize(orderbookBids[i])}");
-        // }
-        // Assert
         Assert.Equal(expected.Count, orderbookBids.Count);
 
         for (int i = 0; i < orderbookBids.Count; i++)
@@ -87,10 +86,8 @@ public class OrderBookTest
             Assert.Equal(expected[i].price, orderbookBids[i].price);
         }
 
-        //Assert.Equal(1, 1);
-
-        //Assert.Equal(Comparer.)
-
 
     }
+
+    
 }

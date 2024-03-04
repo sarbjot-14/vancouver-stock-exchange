@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Exchange.Domain.Enums;
 
 namespace Exchange.Domain.Entities;
 
@@ -24,7 +25,7 @@ public class Order
     public int quantity { get; set; }
     [Required]
 
-    public string type { get; set; }
+    public OrderTypes type { get; set; }
     [Required]
 
     public string duration { get; set; }
