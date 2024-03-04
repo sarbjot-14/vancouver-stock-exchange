@@ -15,7 +15,7 @@ public class OrderBookTest
 {
 
     [Fact]
-    public void AddOrder__AddLimitBids()
+    public void AddOrder__AddLimitBids__DecreasingOrderPriceAndChronologicalPriceIdentical()
     {
         // Arrange
         OrderBook orderBook = new OrderBook();
@@ -76,7 +76,7 @@ public class OrderBookTest
             orderBook.AddOrder(order);
         }
 
-        List<Order> orderbookBids = orderBook.GetBids();
+        List<Order> orderbookBids = orderBook.GetOrders(Side.Buy);
 
         Assert.Equal(expected.Count, orderbookBids.Count);
 
@@ -84,6 +84,82 @@ public class OrderBookTest
         {
             Assert.Equal(expected[i].Id, orderbookBids[i].Id);
             Assert.Equal(expected[i].price, orderbookBids[i].price);
+        }
+
+
+    }
+    [Fact]
+    public void AddOrder__AddLimitAsks__IncreasingOrderPriceAndChronologicalPriceIdentical()
+    {
+        // Arrange
+        OrderBook orderBook = new OrderBook();
+        // inital orders:
+        List<Order> initalBids = new List<Order>(){new Order { account_id = 1,
+            order_class = "stock",
+            duration = "gtd",
+            price = 80,
+            quantity = 100,
+            quantityFilled = 0,
+            recievedTime = new DateTime(),
+            side = Side.Sell,
+            symbol = "AAPL",
+            type = OrderTypes.Limit},
+            new Order { account_id = 1,
+            order_class = "stock",
+            duration = "gtd",
+            price = 60,
+            quantity = 100,
+            quantityFilled = 0,
+            recievedTime = new DateTime(),
+            side = Side.Sell,
+            symbol = "AAPL",
+            type = OrderTypes.Limit},
+            new Order { account_id = 1,
+            order_class = "stock",
+            duration = "gtd",
+            price = 70,
+            quantity = 100,
+            quantityFilled = 0,
+            recievedTime = new DateTime(),
+            side = Side.Sell,
+            symbol = "AAPL",
+            type = OrderTypes.Limit},
+            new Order { account_id = 1,
+            order_class = "stock",
+            duration = "gtd",
+            price = 70,
+            quantity = 100,
+            quantityFilled = 0,
+            recievedTime = new DateTime(),
+            side = Side.Sell,
+            symbol = "AAPL",
+            type = OrderTypes.Limit},};
+
+        // expected orders
+        var expected = new[]{
+            new { Id = initalBids[1].Id, price = 60 },
+            new { Id = initalBids[2].Id, price = 70 },
+            new { Id = initalBids[3].Id, price = 70 } ,
+            new { Id =  initalBids[0].Id, price = 80 },
+
+        }.ToList();
+
+
+        // Act
+        foreach (var order in initalBids)
+        {
+            //Console.WriteLine($"next is {order.price}");
+            orderBook.AddOrder(order);
+        }
+
+        List<Order> orderbookOrders = orderBook.GetOrders(Side.Sell);
+
+        Assert.Equal(expected.Count, orderbookOrders.Count);
+
+        for (int i = 0; i < orderbookOrders.Count; i++)
+        {
+            Assert.Equal(expected[i].Id, orderbookOrders[i].Id);
+            Assert.Equal(expected[i].price, orderbookOrders[i].price);
         }
 
 
