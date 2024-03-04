@@ -17,8 +17,7 @@ public class OrderBook()
     public void AddOrder(Order order)
     {
         LinkedList<LevelNode> orderBookSide = order.side == Side.Buy ? bids : asks;
-        // if (order.side == Side.Buy)
-        // {
+    
 
         if (order.type == OrderTypes.Market)
         {

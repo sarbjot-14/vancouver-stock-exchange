@@ -4,4 +4,6 @@ public interface IOrderEngineService
 {
 
      void CreateOrder(Order order);
+
+     List<Order> GetOrders(Side side, string ticker);
 }
