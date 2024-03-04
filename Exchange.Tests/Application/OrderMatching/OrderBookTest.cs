@@ -27,7 +27,7 @@ public class OrderBookTest
             quantity = 100,
             quantityFilled = 0,
             recievedTime = new DateTime(),
-            side = "buy",
+            side = Side.Buy,
             symbol = "AAPL",
             type = OrderTypes.Limit},
             new Order { account_id = 1,
@@ -37,7 +37,7 @@ public class OrderBookTest
             quantity = 100,
             quantityFilled = 0,
             recievedTime = new DateTime(),
-            side = "buy",
+            side = Side.Buy,
             symbol = "AAPL",
             type = OrderTypes.Limit},
             new Order { account_id = 1,
@@ -47,7 +47,7 @@ public class OrderBookTest
             quantity = 100,
             quantityFilled = 0,
             recievedTime = new DateTime(),
-            side = "buy",
+            side = Side.Buy,
             symbol = "AAPL",
             type = OrderTypes.Limit}, new Order { account_id = 1,
             order_class = "stock",
@@ -56,10 +56,10 @@ public class OrderBookTest
             quantity = 100,
             quantityFilled = 0,
             recievedTime = new DateTime(),
-            side = "buy",
+            side = Side.Buy,
             symbol = "AAPL",
             type = OrderTypes.Limit},};
-            
+
         // expected orders
         var expected = new[]{
             new { Id =  initalBids[3].Id, price = 300 },
@@ -89,5 +89,5 @@ public class OrderBookTest
 
     }
 
-    
+
 }

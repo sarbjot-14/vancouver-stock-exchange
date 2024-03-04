@@ -11,7 +11,7 @@ public record OrderRequestDto(
     [Required]
     string symbol,
     [Required]
-    string side,
+    Side side,
     [Required]
     int quantity,
     [Required]
@@ -38,7 +38,7 @@ public record OrderResponseDto(
     [Required]
     string symbol,
     [Required]
-    string side,
+    Side side,
     [Required]
     int quantity,
     [Required]

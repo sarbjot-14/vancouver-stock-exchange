@@ -19,7 +19,7 @@ public class Order
     public string symbol { get; set; }
     [Required]
 
-    public string side { get; set; }
+    public Side side { get; set; }
     [Required]
 
     public int quantity { get; set; }

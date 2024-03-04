@@ -16,7 +16,7 @@ public class OrderBook()
 
     public void AddOrder(Order order)
     {
-        if (order.side == "buy")
+        if (order.side == Side.Buy)
         {
 
             if (order.type == OrderTypes.Market)
