@@ -46,7 +46,13 @@ public record OrderResponseDto(
     [Required]
     string duration,
     [Required]
-    decimal fillPrice,
+    int quantityFilled,
+    [Required]
+    decimal bookValue,
+    [Required]
+    decimal? averageCost,
+    [Required]
+    decimal price,
     decimal? stop,
     decimal? trailing
 );

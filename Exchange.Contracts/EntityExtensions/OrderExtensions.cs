@@ -9,7 +9,7 @@ public static class OrderExtensions
     public static OrderResponseDto ToResponseDto(this Order order)
     {
 
-        return new OrderResponseDto(order.Id, "submitted", order.account_id, order.order_class, order.symbol, order.side, order.quantity, order.type, order.duration, order.price, order?.stop, order?.trailing);
+        return new OrderResponseDto(order.Id, "submitted", order.account_id, order.order_class, order.symbol, order.side, order.quantity, order.type, order.duration, order.quantityFilled, order.bookValue, order.averageCost, order.price, order?.stop, order?.trailing);
 
     }
 

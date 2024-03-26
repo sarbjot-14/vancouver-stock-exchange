@@ -16,104 +16,185 @@ public class OrderBook()
 
     public void AddOrder(Order order)
     {
-        LinkedList<LevelNode> orderBookSide = order.side == Side.Buy ? bids : asks;
-    
 
-        if (order.type == OrderTypes.Market)
+        switch (order.type)
         {
-            // // check for matching ask orders
-
+            case OrderTypes.Market:
+                ExecuteMarketOrder(order);
+                break;
+            case OrderTypes.Limit:
+                AddLimitOrder(order);
+                break;
+            default:
+                Console.WriteLine("default");
+                break;
         }
-        else
+
+    }
+
+    private void ExecuteMarketOrder(Order order)
+    {
+        LinkedList<LevelNode> orderBookSide = order.side == Side.Buy ? asks : bids;
+        // find level
+        LinkedListNode<LevelNode> current = orderBookSide.First;
+
+        while (current != null)
         {
-            if (orderBookSide.First == null)
+            LinkedListNode<Order> currentOrder = current.Value.levelOrders.First;
+            if (currentOrder == null)
             {
-                //empty orderBookSide
-                LevelNode newLevel = new LevelNode();
-                newLevel.levelPrice = order.price;
-                newLevel.levelOrders = new LinkedList<Order>();
-                newLevel.levelOrders.AddLast(order);
-                orderBookSide.AddFirst(newLevel);
+                //TODO: did not find matching orders
+
+                return;
 
             }
             else
             {
-                // find level
-                LinkedListNode<LevelNode> current = orderBookSide.First;
-                var newOrder = new LinkedListNode<Order>(order);
-                Func<decimal, decimal, bool> priceComparison = order.side == Side.Buy ? (x, y) => x <= y : (x, y) => x >= y;
-
-
-                while (current != null)
+                while (currentOrder != null)
                 {
-                    if (priceComparison(order.price, current.Value.levelPrice))
+                    int remainingLimitToFill = currentOrder.Value.quantity - currentOrder.Value.quantityFilled;
+                    int remainingMarketToFill = order.quantity - order.quantityFilled;
+                    if (remainingMarketToFill > remainingLimitToFill)
                     {
-                        if (order.price == current.Value.levelPrice)
-                        {
-                            //add to level
-                            LinkedListNode<Order> currentOrder = current.Value.levelOrders.First;
+                        // able to fill a limit order
+                        order.quantityFilled = order.quantityFilled + remainingLimitToFill;
+                        order.bookValue = order.bookValue + (currentOrder.Value.price * remainingLimitToFill);
+                        currentOrder.Value.quantityFilled = currentOrder.Value.quantity;
+                        currentOrder.Value.bookValue = currentOrder.Value.bookValue + (currentOrder.Value.price * remainingLimitToFill);
 
-                            if (currentOrder == null)
-                            {
+                        //Todo: remove this limit order
+                        var tempOrder = currentOrder.Next;
+                        current.Value.levelOrders.Remove(currentOrder);
 
-                                current.Value.levelOrders.AddLast(newOrder);
-                                return;
-
-                            }
-                            else
-                            {
-                                while (currentOrder != null)
-                                {
-                                    if (order.recievedTime > currentOrder.Value.recievedTime)
-                                    {
-                                        current.Value.levelOrders.AddBefore(currentOrder, newOrder);
-                                        return;
-                                    }
-
-                                    currentOrder = currentOrder.Next;
-                                }
-                                current.Value.levelOrders.AddLast(newOrder);
-                                return;
-                            }
-
-                        }
+                        currentOrder = tempOrder!;
+                        continue;
 
 
                     }
                     else
                     {
-                        // add level before current 
-                        LevelNode newLevel = new LevelNode();
-                        newLevel.levelPrice = order.price;
-                        newLevel.levelOrders = new LinkedList<Order>();
-                        newLevel.levelOrders.AddLast(order);
+                        // partial fill the limit order
+                        order.quantityFilled = order.quantity;
+                        order.bookValue = order.bookValue + (currentOrder.Value.price * remainingMarketToFill);
 
-                        LinkedListNode<LevelNode> newLevelNode = new LinkedListNode<LevelNode>(newLevel);
-                        orderBookSide.AddBefore(current, newLevel);
-                        return;
-                    }
-                    //add another level to end
-                    if (current.Next == null)
-                    {
-                        LevelNode newLevel = new LevelNode();
-                        newLevel.levelPrice = order.price;
-                        newLevel.levelOrders = new LinkedList<Order>();
-                        newLevel.levelOrders.AddLast(order);
-
-                        LinkedListNode<LevelNode> newLevelNode = new LinkedListNode<LevelNode>(newLevel);
-                        orderBookSide.AddAfter(current, newLevel);
+                        currentOrder.Value.quantityFilled = currentOrder.Value.quantityFilled + remainingMarketToFill;
+                        currentOrder.Value.bookValue = currentOrder.Value.bookValue + (currentOrder.Value.price * remainingMarketToFill);
                         return;
                     }
 
-                    current = current.Next;
+                    //return;
 
+                    //TODO: if market order still alive then store it
+
+                    //currentOrder = currentOrder.Next;
                 }
+
+
             }
+
+
+            if (current.Value.levelOrders.First == null)
+            {
+                var temp = current.Next;
+                orderBookSide.Remove(current);
+                current = temp;
+            }
+            else
+            {
+                current = current.Next;
+            }
+
 
         }
     }
 
+    private void AddLimitOrder(Order order)
+    {
+        LinkedList<LevelNode> orderBookSide = order.side == Side.Buy ? bids : asks;
+        if (orderBookSide.First == null)
+        {
+            //empty orderBookSide
+            LevelNode newLevel = new LevelNode();
+            newLevel.levelPrice = order.price;
+            newLevel.levelOrders = new LinkedList<Order>();
+            newLevel.levelOrders.AddLast(order);
+            orderBookSide.AddFirst(newLevel);
 
+        }
+        else
+        {
+            // find level
+            LinkedListNode<LevelNode> current = orderBookSide.First;
+            var newOrder = new LinkedListNode<Order>(order);
+            Func<decimal, decimal, bool> priceComparison = order.side == Side.Buy ? (x, y) => x <= y : (x, y) => x >= y;
+
+
+            while (current != null)
+            {
+                if (priceComparison(order.price, current.Value.levelPrice))
+                {
+                    if (order.price == current.Value.levelPrice)
+                    {
+                        //add to level
+                        LinkedListNode<Order> currentOrder = current.Value.levelOrders.First;
+
+                        if (currentOrder == null)
+                        {
+
+                            current.Value.levelOrders.AddLast(newOrder);
+                            return;
+
+                        }
+                        else
+                        {
+                            while (currentOrder != null)
+                            {
+                                if (order.recievedTime > currentOrder.Value.recievedTime)
+                                {
+                                    current.Value.levelOrders.AddBefore(currentOrder, newOrder);
+                                    return;
+                                }
+
+                                currentOrder = currentOrder.Next;
+                            }
+                            current.Value.levelOrders.AddLast(newOrder);
+                            return;
+                        }
+
+                    }
+
+
+                }
+                else
+                {
+                    // add level before current 
+                    LevelNode newLevel = new LevelNode();
+                    newLevel.levelPrice = order.price;
+                    newLevel.levelOrders = new LinkedList<Order>();
+                    newLevel.levelOrders.AddLast(order);
+
+                    LinkedListNode<LevelNode> newLevelNode = new LinkedListNode<LevelNode>(newLevel);
+                    orderBookSide.AddBefore(current, newLevel);
+                    return;
+                }
+                //add another level to end
+                if (current.Next == null)
+                {
+                    LevelNode newLevel = new LevelNode();
+                    newLevel.levelPrice = order.price;
+                    newLevel.levelOrders = new LinkedList<Order>();
+                    newLevel.levelOrders.AddLast(order);
+
+                    LinkedListNode<LevelNode> newLevelNode = new LinkedListNode<LevelNode>(newLevel);
+                    orderBookSide.AddAfter(current, newLevel);
+                    return;
+                }
+
+                current = current.Next;
+
+            }
+        }
+    }
 
     public List<Order> GetOrders(Side side)
     {
